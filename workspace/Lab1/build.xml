@@ -1,0 +1,26 @@
+<project name="hello" default="clean" xmlns:cpptasks="antlib:net.sf.antcontrib.cpptasks">
+<property name="build.native" value="./"/>
+<property name="doxygen.cmd" value="/usr/bin/doxygen"/>
+<property name="build.native" value="./src"/>
+<property name="cppcheck.cmd" value="/usr/bin/cppcheck"/>
+
+  <target name="clean" description="clean up" >
+    <delete quiet="true">
+      <fileset dir="Docs/html" includes="**/*" />
+    </delete>
+  </target>  
+<target name="doxygen"
+          description="Process documentation" >
+    <exec executable="${doxygen.cmd}" 
+          dir="${build.native}"
+          failonerror="false">
+       <arg value="Doxygen.cfg"/>
+    </exec>
+  </target>
+<target name="cppcheck" description="C++ code check" >
+    <exec dir="${build.native}" executable="${cppcheck.cmd}" failonerror="true">
+      <arg line="--xml --xml-version=2 --enable=all --inconclusive --language=c++ *.cpp"/>
+      <redirector error="cppcheck.xml"/>
+    </exec>
+</target>
+</project>
